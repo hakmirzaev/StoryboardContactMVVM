@@ -10,4 +10,10 @@ struct Contact: Decodable {
         self.name = name
         self.phone = phone
     }
+    
+    init(id: String, name: String, phone: String) {
+        self.id = id
+        self.name = name
+        self.phone = phone
+    }
 }

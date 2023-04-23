@@ -12,10 +12,13 @@ class EditViewController: BaseViewController {
     var contact: Contact = Contact(name: "", phone: "")
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var phoneLabel: UITextField!
+    var viewModel = EditViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         initView()
+        bindViewModel()
     }
     
     func initView() {
@@ -24,23 +27,22 @@ class EditViewController: BaseViewController {
         
         title = "Edit Contact"
     }
-
-    @IBAction func saveButton(_ sender: Any) {
-        if nameLabel.text != nil && phoneLabel.text != nil {
-            showProgress()
-            AFHttp.put(url: AFHttp.API_CONTACT_UPDATE + (contact.id)!, params: AFHttp.paramsContactCreate(contact: Contact(name: nameLabel.text!, phone: phoneLabel.text!)), handler: { response in
-                self.hideProgress()
-                switch response.result {
-                case .success:
-                    print(response.result)
-                case let .failure(error):
-                    print(error)
-                }
-            })
-        }
-        
+    
+    func callHomeViewController() {
         dismiss(animated: true, completion: nil)
     }
     
+    func bindViewModel(){
+        viewModel.controller = self
+    }
 
+    @IBAction func saveButton(_ sender: Any) {
+        if nameLabel.text != nil && phoneLabel.text != nil {
+            viewModel.apiContactEdit(contact: Contact(id: contact.id!, name: nameLabel.text!, phone: phoneLabel.text!), handler: { response in
+                if response {
+                    self.callHomeViewController()
+                }
+            })
+        }
+    }
 }

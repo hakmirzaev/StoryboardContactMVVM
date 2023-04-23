@@ -26,6 +26,9 @@
 		0E122B9F29EB2A5B003A1EEB /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E122B9E29EB2A5B003A1EEB /* Contact.swift */; };
 		0E122BA229EB2F28003A1EEB /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E122BA029EB2F28003A1EEB /* ContactTableViewCell.swift */; };
 		0E122BA329EB2F28003A1EEB /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E122BA129EB2F28003A1EEB /* ContactTableViewCell.xib */; };
+		0EBA55B129F56B6C00E0D38C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBA55B029F56B6C00E0D38C /* HomeViewModel.swift */; };
+		0EBA55B329F56B7400E0D38C /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBA55B229F56B7400E0D38C /* CreateViewModel.swift */; };
+		0EBA55B729F56B8C00E0D38C /* EditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBA55B629F56B8C00E0D38C /* EditViewModel.swift */; };
 		0EF2404E29ED880C002D0D32 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF2404D29ED880C002D0D32 /* Network.swift */; };
 		ABB43750DC1A585E527349BE /* Pods_StoryboardContactTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81F9AF717C1A6E46DC8AFF7D /* Pods_StoryboardContactTests.framework */; };
 		CEDF46CDBCEBD6107ADAEBD7 /* Pods_StoryboardContact.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D49E05505E4D575291E78A98 /* Pods_StoryboardContact.framework */; };
@@ -75,6 +78,9 @@
 		0E122B9E29EB2A5B003A1EEB /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		0E122BA029EB2F28003A1EEB /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		0E122BA129EB2F28003A1EEB /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
+		0EBA55B029F56B6C00E0D38C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		0EBA55B229F56B7400E0D38C /* CreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
+		0EBA55B629F56B8C00E0D38C /* EditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewModel.swift; sourceTree = "<group>"; };
 		0EF2404D29ED880C002D0D32 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		42585BCAC6CE008569401A6E /* Pods-StoryboardContact.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StoryboardContact.release.xcconfig"; path = "Target Support Files/Pods-StoryboardContact/Pods-StoryboardContact.release.xcconfig"; sourceTree = "<group>"; };
 		67EA36C158A18497FF86C524 /* Pods-StoryboardContact.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StoryboardContact.debug.xcconfig"; path = "Target Support Files/Pods-StoryboardContact/Pods-StoryboardContact.debug.xcconfig"; sourceTree = "<group>"; };
@@ -199,14 +205,65 @@
 			isa = PBXGroup;
 			children = (
 				0E122B9429EB2A19003A1EEB /* BaseViewController.swift */,
+				0EBA55AC29F56B3600E0D38C /* home */,
+				0EBA55AD29F56B4200E0D38C /* create */,
+				0EBA55AE29F56B4C00E0D38C /* edit */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
+		0EBA55AC29F56B3600E0D38C /* home */ = {
+			isa = PBXGroup;
+			children = (
+				0EBA55AF29F56B6200E0D38C /* viewmodel */,
 				0E122B9029EB2A10003A1EEB /* HomeViewController.swift */,
 				0E122B9129EB2A10003A1EEB /* HomeViewController.xib */,
+			);
+			path = home;
+			sourceTree = "<group>";
+		};
+		0EBA55AD29F56B4200E0D38C /* create */ = {
+			isa = PBXGroup;
+			children = (
+				0EBA55B429F56B7900E0D38C /* viewmodel */,
 				0E122B9629EB2A35003A1EEB /* CreateViewController.swift */,
 				0E122B9729EB2A35003A1EEB /* CreateViewController.xib */,
+			);
+			path = create;
+			sourceTree = "<group>";
+		};
+		0EBA55AE29F56B4C00E0D38C /* edit */ = {
+			isa = PBXGroup;
+			children = (
+				0EBA55B529F56B8000E0D38C /* viewmodel */,
 				0E122B9A29EB2A41003A1EEB /* EditViewController.swift */,
 				0E122B9B29EB2A41003A1EEB /* EditViewController.xib */,
 			);
-			path = controllers;
+			path = edit;
+			sourceTree = "<group>";
+		};
+		0EBA55AF29F56B6200E0D38C /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				0EBA55B029F56B6C00E0D38C /* HomeViewModel.swift */,
+			);
+			path = viewmodel;
+			sourceTree = "<group>";
+		};
+		0EBA55B429F56B7900E0D38C /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				0EBA55B229F56B7400E0D38C /* CreateViewModel.swift */,
+			);
+			path = viewmodel;
+			sourceTree = "<group>";
+		};
+		0EBA55B529F56B8000E0D38C /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				0EBA55B629F56B8C00E0D38C /* EditViewModel.swift */,
+			);
+			path = viewmodel;
 			sourceTree = "<group>";
 		};
 		0EF2404C29ED87EE002D0D32 /* network */ = {
@@ -483,7 +540,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EBA55B329F56B7400E0D38C /* CreateViewModel.swift in Sources */,
 				0EF2404E29ED880C002D0D32 /* Network.swift in Sources */,
+				0EBA55B129F56B6C00E0D38C /* HomeViewModel.swift in Sources */,
 				0E122B9529EB2A19003A1EEB /* BaseViewController.swift in Sources */,
 				0E122B5A29EB29B4003A1EEB /* AppDelegate.swift in Sources */,
 				0E122B9829EB2A35003A1EEB /* CreateViewController.swift in Sources */,
@@ -492,6 +551,7 @@
 				0E122B6429EB29B4003A1EEB /* StoryboardContact.xcdatamodeld in Sources */,
 				0E122BA229EB2F28003A1EEB /* ContactTableViewCell.swift in Sources */,
 				0E122B9229EB2A10003A1EEB /* HomeViewController.swift in Sources */,
+				0EBA55B729F56B8C00E0D38C /* EditViewModel.swift in Sources */,
 				0E122B9C29EB2A41003A1EEB /* EditViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

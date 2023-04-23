@@ -11,27 +11,32 @@ class CreateViewController: BaseViewController {
 
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var phoneLabel: UITextField!
+    var viewModel = CreateViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         initView()
+        bindViewModel()
     }
 
     func initView() {
         title = "Create Contact"
     }
     
+    func callHomeViewController() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func bindViewModel(){
+        viewModel.controller = self
+    }
+    
     @IBAction func createButton(_ sender: Any) {
         if nameLabel.text != nil && phoneLabel.text != nil {
-            showProgress()
-            AFHttp.post(url: AFHttp.API_CONTACT_CREATE, params: AFHttp.paramsContactCreate(contact: Contact(name: nameLabel.text!, phone: phoneLabel.text!)), handler: { response in
-                self.hideProgress()
-                switch response.result {
-                case .success:
-                    print(response.result)
-                    self.navigationController?.popViewController(animated: true)
-                case let .failure(error):
-                    print(error)
+            viewModel.apiContactCreate(contact: Contact(name: nameLabel.text!, phone: phoneLabel.text!), handler: { response in
+                if response {
+                    self.callHomeViewController()
                 }
             })
         }

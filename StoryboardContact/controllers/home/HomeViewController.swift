@@ -10,7 +10,7 @@ import UIKit
 class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
-    var items = Array<Contact>()
+    var viewModel = HomeViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,40 +18,7 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         initViews()
     }
     
-    func refreshTableView(contacts: [Contact]) {
-        self.items = contacts
-        self.tableView.reloadData()
-    }
     
-    func apiContactList() {
-        showProgress()
-        
-        AFHttp.get(url: AFHttp.API_CONTACT_LIST, params: AFHttp.paramsEmpty(), handler: { response in
-            self.hideProgress()
-            switch response.result {
-            case .success:
-                let contacts = try! JSONDecoder().decode([Contact].self, from: response.data!)
-                self.refreshTableView(contacts: contacts)
-            case let .failure(error):
-                print(error)
-            }
-        })
-    }
-    
-    func apiContactDelete(contact: Contact) {
-        showProgress()
-        
-        AFHttp.del(url: AFHttp.API_CONTACT_DELETE + contact.id!, params: AFHttp.paramsEmpty(), handler: { response in
-            self.hideProgress()
-            switch response.result {
-            case .success:
-                print(response.result)
-                self.apiContactList()
-            case let .failure(error):
-                print(error)
-            }
-        })
-    }
 
     // MARK: - Method
     
@@ -60,7 +27,15 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         tableView.delegate = self
         
         initNavigation()
-        apiContactList()
+        bindViewModel()
+        viewModel.apiContactList()
+    }
+    
+    func bindViewModel(){
+        viewModel.controller = self
+        viewModel.items.bind(to: self) { strongSelf, _ in
+            strongSelf.tableView.reloadData()
+        }
     }
     
     func initNavigation() {
@@ -87,7 +62,7 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Action
     
     @objc func leftTapped() {
-        apiContactList()
+        viewModel.apiContactList()
     }
     
     @objc func rightTapped() {
@@ -97,11 +72,11 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Table View
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return viewModel.items.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = items[indexPath.row]
+        let item = viewModel.items.value[indexPath.row]
         
         let cell = Bundle.main.loadNibNamed("ContactTableViewCell", owner: self, options: nil)?.first as! ContactTableViewCell
         
@@ -112,11 +87,11 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?{
-        return UISwipeActionsConfiguration(actions: [makeCompleteContextualAction(forRowAt: indexPath, contact: items[indexPath.row])])
+        return UISwipeActionsConfiguration(actions: [makeCompleteContextualAction(forRowAt: indexPath, contact: viewModel.items.value[indexPath.row])])
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return UISwipeActionsConfiguration(actions: [makeDeleteContextualAction(forRowAt: indexPath, contact: items[indexPath.row])])
+        return UISwipeActionsConfiguration(actions: [makeDeleteContextualAction(forRowAt: indexPath, contact: viewModel.items.value[indexPath.row])])
     }
     
     // MARK: - Contextual Actions
@@ -125,7 +100,11 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         return UIContextualAction(style: .destructive, title: "Delete") { (action, swipeButtonView, completion) in
             print("DELETE HERE")
             
-            self.apiContactDelete(contact: contact)
+            self.viewModel.apiContactDelete(contact: contact, handler: { isDeleted in
+                if isDeleted {
+                    self.viewModel.apiContactList()
+                }
+            })
             completion(true)
         }
     }
